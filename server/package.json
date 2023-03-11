@@ -1,0 +1,30 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Server app using expressjs",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "lint": "eslint ./"
+  },
+  "keywords": [
+    "server"
+  ],
+  "author": "Pijar Pahlawan Qolbu",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.36.0",
+    "eslint-config-google": "^0.14.0",
+    "nodemon": "^2.0.20",
+    "sequelize-cli": "^6.6.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "pg": "^8.10.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.29.3"
+  }
+}
