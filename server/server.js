@@ -1,16 +1,18 @@
 const cors = require('cors');
 const express = require('express');
-const routes = require('./routes/hello');
+const routes = require('./routes/auth');
 
 const app = express();
-const port = 8080;
+const port = 7986;
 
+// middleware
 app.use(cors());
 app.use(express.json());
-app.use('/api', routes);
+
+app.use('/auth', routes);
 
 app.get('/', (req, res) => {
-  res.redirect('api');
+  res.redirect('auth');
 });
 
 app.listen(port, () => console.log(`App running on http://localhost:${port}`));
