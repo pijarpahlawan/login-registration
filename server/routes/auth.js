@@ -37,9 +37,9 @@ router.post('/register', async (req, res) => {
   } catch (error) {
     console.error(error);
     if (error instanceof ValidationError) {
-      return res.status(400).send(error.message);
+      return res.status(400).json({ message: error.message });
     } else {
-      return res.status(500).json(error.message);
+      return res.status(500).json({ message: error.message });
     }
   }
 });
@@ -57,7 +57,9 @@ router.post('/login', async (req, res) => {
       },
     });
     if (Object.keys(userFinded).length === 0) {
-      return res.status(401).send("Username or email doesn't registered");
+      return res
+        .status(401)
+        .json({ message: "Username or email doesn't registered" });
     }
 
     //  3. cek jika password yang dimasukkan cocok dengan passwor di database
@@ -66,15 +68,16 @@ router.post('/login', async (req, res) => {
       userFinded.userPassword,
     );
     if (!validPassword) {
-      return res.status(401).send("Password doesn't match");
+      return res.status(401).json({ message: "Password doesn't match" });
     }
 
     //  4. berikan jwt token
     const token = jwtGenerator(userFinded.userId);
     return res.status(200).json({ token });
   } catch (error) {
-    console.log(error);
-    return res.status(500).send('server error: ' + error.message);
+    console.error(error);
+    return res.status(500).json({ message: error.message });
   }
 });
+
 module.exports = router;
