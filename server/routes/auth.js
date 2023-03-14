@@ -1,7 +1,7 @@
 /* eslint-disable quotes */
 /* eslint-disable indent */
 /* eslint-disable object-curly-spacing */
-const { Sequelize, DataTypes, Op } = require('sequelize');
+const { Sequelize, DataTypes, Op, ValidationError } = require('sequelize');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const getModel = require('../models/user');
@@ -13,41 +13,34 @@ const sequelize = new Sequelize(
 );
 const User = getModel(sequelize, DataTypes);
 
-// registering
+// registration route
 router.post('/register', async (req, res) => {
   try {
     //  1. destrukturisasi req.body
     const { name, email, password } = req.body;
 
-    //  2. cek apakah user sudah terdaftar
-    const userFinded = await User.findAll({
-      where: {
-        userEmail: email,
-      },
-    });
-    if (Object.keys(userFinded).length !== 0) {
-      return res.status(200).send('User already exist');
-    }
-
-    //  3. bcrypt password
+    //  2. bcrypt password
     const saltRound = 10;
     const salt = await bcrypt.genSalt(saltRound);
     const encryptedPassword = await bcrypt.hash(password, salt);
 
-    //  4. masukkan user baru ke dalam database
+    //  3. masukkan user baru ke dalam database
     const newUser = await User.create({
       userName: name,
       userEmail: email,
       userPassword: encryptedPassword,
     });
 
-    //  5. generate jwt token
+    //  4. generate jwt token
     const token = jwtGenerator(newUser.userId);
     return res.status(201).json({ token });
   } catch (error) {
-    console.log(User);
-    console.error(error.message);
-    return res.status(500).send('Server error');
+    console.error(error);
+    if (error instanceof ValidationError) {
+      return res.status(400).send(error.message);
+    } else {
+      return res.status(500).json(error.message);
+    }
   }
 });
 
@@ -64,7 +57,7 @@ router.post('/login', async (req, res) => {
       },
     });
     if (Object.keys(userFinded).length === 0) {
-      return res.status(401).send("Email doesn't registered");
+      return res.status(401).send("Username or email doesn't registered");
     }
 
     //  3. cek jika password yang dimasukkan cocok dengan passwor di database
@@ -80,8 +73,8 @@ router.post('/login', async (req, res) => {
     const token = jwtGenerator(userFinded.userId);
     return res.status(200).json({ token });
   } catch (error) {
-    console.log(error.message);
-    return res.status(500).send('server error');
+    console.log(error);
+    return res.status(500).send('server error: ' + error.message);
   }
 });
 module.exports = router;

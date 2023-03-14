@@ -28,14 +28,23 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         field: 'user_name',
+        unique: {
+          name: 'userName',
+          msg: 'Username has been used',
+        },
       },
       userEmail: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
         field: 'user_email',
+        unique: {
+          name: 'userEmail',
+          msg: 'Email has been registered',
+        },
         validate: {
-          isEmail: true,
+          isEmail: {
+            msg: 'Email must be valid value',
+          },
         },
       },
       userPassword: {
