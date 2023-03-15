@@ -2,11 +2,10 @@ const express = require('express');
 const { Sequelize, DataTypes } = require('sequelize');
 const getModel = require('../models/user');
 const authorization = require('../middleware/authorization');
+require('dotenv').config();
 
 const router = new express.Router();
-const sequelize = new Sequelize(
-  'postgres://learn:pijarpq123@localhost:5432/jwtauth',
-);
+const sequelize = new Sequelize(process.env.CONNECTION_STRING);
 
 const User = getModel(sequelize, DataTypes);
 

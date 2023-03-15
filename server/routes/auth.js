@@ -5,11 +5,10 @@ const bcrypt = require('bcrypt');
 const getModel = require('../models/user');
 const jwtGenerator = require('../utils/jwtGenerator');
 const authorization = require('../middleware/authorization');
+require('dotenv').config();
 
 const router = new express.Router();
-const sequelize = new Sequelize(
-  'postgres://learn:pijarpq123@localhost:5432/jwtauth',
-);
+const sequelize = new Sequelize(process.env.CONNECTION_STRING);
 
 const User = getModel(sequelize, DataTypes);
 
@@ -72,6 +71,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// verify checker route
 router.get('/is-verify', authorization, async (req, res) => {
   try {
     res.status(200).json({
