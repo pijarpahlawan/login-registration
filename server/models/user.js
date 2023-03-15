@@ -1,6 +1,4 @@
-/* eslint-disable object-curly-spacing */
 /* eslint-disable require-jsdoc */
-/* eslint-disable indent */
 /* eslint-disable valid-jsdoc */
 'use strict';
 const { Model } = require('sequelize');

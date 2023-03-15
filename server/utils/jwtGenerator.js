@@ -1,4 +1,3 @@
-/* eslint-disable object-curly-spacing */
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 

@@ -1,6 +1,7 @@
 const cors = require('cors');
 const express = require('express');
-const routes = require('./routes/auth');
+const authRoutes = require('./routes/auth');
+const dashboardRoutes = require('./routes/dashboard');
 
 const app = express();
 const port = 7986;
@@ -9,10 +10,7 @@ const port = 7986;
 app.use(cors());
 app.use(express.json());
 
-app.use('/auth', routes);
-
-app.get('/', (req, res) => {
-  res.redirect('auth');
-});
+app.use('/auth', authRoutes);
+app.use('/dashboard', dashboardRoutes);
 
 app.listen(port, () => console.log(`App running on http://localhost:${port}`));

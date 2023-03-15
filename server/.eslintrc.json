@@ -10,5 +10,8 @@
   "parserOptions": {
     "ecmaVersion": "latest"
   },
-  "rules": {}
+  "rules": {
+    "object-curly-spacing": "off",
+    "indent": "off"
+  }
 }
