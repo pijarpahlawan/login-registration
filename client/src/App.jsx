@@ -1,11 +1,51 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
+import { useState } from 'react';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import Dashboard from './pages/Dashboard';
+import ErrorPage from './pages/ErrorPage';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   return (
-    <div>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/login"
+          element={
+            !isAuthenticated ? (
+              <Login setAuth={setIsAuthenticated} />
+            ) : (
+              <Navigate to="/dashboard" />
+            )
+          }
+          errorElement={<ErrorPage />}
+        />
+        <Route
+          path="/register"
+          element={
+            !isAuthenticated ? (
+              <Register setAuth={setIsAuthenticated} />
+            ) : (
+              <Navigate to="/dashboard" />
+            )
+          }
+          errorElement={<ErrorPage />}
+        />
+        <Route
+          path="/dashboard"
+          element={
+            isAuthenticated ? (
+              <Dashboard setAuth={setIsAuthenticated} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+          errorElement={<ErrorPage />}
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
