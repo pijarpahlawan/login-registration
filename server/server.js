@@ -2,9 +2,10 @@ const cors = require('cors');
 const express = require('express');
 const authRoutes = require('./routes/auth');
 const dashboardRoutes = require('./routes/dashboard');
+require('dotenv').config();
 
 const app = express();
-const port = 7986;
+const port = process.env.PORT || 3000;
 
 // middleware
 app.use(cors());
