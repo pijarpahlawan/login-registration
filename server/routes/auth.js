@@ -1,5 +1,11 @@
 /* eslint-disable quotes */
-const { Sequelize, DataTypes, Op, ValidationError } = require('sequelize');
+const {
+  Sequelize,
+  DataTypes,
+  Op,
+  ValidationError,
+  Transaction,
+} = require('sequelize');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const getModel = require('../models/user');
@@ -21,13 +27,22 @@ router.post('/register', async (req, res) => {
     const salt = await bcrypt.genSalt(saltRound);
     const encryptedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = await User.create({
-      userName: name,
-      userEmail: email,
-      userPassword: encryptedPassword,
-    });
+    const result = await sequelize.transaction(
+      { isolationLevel: Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED },
+      async (t) => {
+        const newUser = await User.create(
+          {
+            userName: name,
+            userEmail: email,
+            userPassword: encryptedPassword,
+          },
+          { transaction: t },
+        );
+        return newUser;
+      },
+    );
 
-    const token = jwtGenerator(newUser.userId);
+    const token = jwtGenerator(result.userId);
     return res.status(201).json({ token });
   } catch (error) {
     console.error(error);
@@ -44,26 +59,31 @@ router.post('/login', async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    const userFinded = await User.findOne({
-      where: {
-        [Op.or]: [{ userName: name }, { userEmail: email }],
+    const result = await sequelize.transaction(
+      { isolationLevel: Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED },
+      async (t) => {
+        const userFinded = await User.findOne({
+          where: {
+            [Op.or]: [{ userName: name }, { userEmail: email }],
+          },
+          transaction: t,
+        });
+        return userFinded;
       },
-    });
-    if (!userFinded) {
+    );
+
+    if (!result) {
       return res
         .status(401)
         .json({ message: "Username or email doesn't registered" });
     }
 
-    const validPassword = await bcrypt.compare(
-      password,
-      userFinded.userPassword,
-    );
+    const validPassword = await bcrypt.compare(password, result.userPassword);
     if (!validPassword) {
       return res.status(401).json({ message: "Password doesn't match" });
     }
 
-    const token = jwtGenerator(userFinded.userId);
+    const token = jwtGenerator(result.userId);
     return res.status(200).json({ token });
   } catch (error) {
     console.error(error);
