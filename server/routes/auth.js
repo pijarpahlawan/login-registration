@@ -57,7 +57,9 @@ router.post('/register', async (req, res) => {
 // login route
 router.post('/login', async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name = '', email = '', password = '' } = req.body;
+
+    console.log(`BACA MASSSS: ${email}`);
 
     const result = await sequelize.transaction(
       { isolationLevel: Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED },
