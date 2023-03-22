@@ -36,6 +36,10 @@ function Dashboard(props) {
     getUser();
   }, []);
 
+  useEffect(() => {
+    document.title = 'Dashboard Page';
+  }, []);
+
   return (
     <div className="">
       <h1>{user.userName}</h1>

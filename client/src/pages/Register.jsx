@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FormAuth from '../components/FormAuth';
 
 function Register(props) {
@@ -72,6 +72,9 @@ function Register(props) {
     },
   ];
 
+  useEffect(() => {
+    document.title = 'Register Page';
+  });
   return (
     <FormAuth
       tittleForm="Registration"

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FormAuth from '../components/FormAuth';
 
 function Login(props) {
@@ -60,6 +60,10 @@ function Login(props) {
       onChange: handleInputChange,
     },
   ];
+
+  useEffect(() => {
+    document.title = 'Login Page';
+  });
 
   return (
     <FormAuth
