@@ -1,12 +1,14 @@
-import { useState } from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import Dashboard from './pages/Dashboard';
-import ErrorPage from './pages/ErrorPage';
-import Login from './pages/Login';
-import Register from './pages/Register';
+import { useState } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import Dashboard from "./pages/Dashboard";
+import ErrorPage from "./pages/ErrorPage";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const hostname = import.meta.env.VITE_HOSTNAME;
+  const port = import.meta.env.VITE_PORT;
 
   return (
     <BrowserRouter>
@@ -15,7 +17,11 @@ function App() {
           path="/login"
           element={
             !isAuthenticated ? (
-              <Login setAuth={setIsAuthenticated} />
+              <Login
+                hostname={hostname}
+                port={port}
+                setAuth={setIsAuthenticated}
+              />
             ) : (
               <Navigate to="/dashboard" />
             )
@@ -26,7 +32,11 @@ function App() {
           path="/register"
           element={
             !isAuthenticated ? (
-              <Register setAuth={setIsAuthenticated} />
+              <Register
+                hostname={hostname}
+                port={port}
+                setAuth={setIsAuthenticated}
+              />
             ) : (
               <Navigate to="/dashboard" />
             )
@@ -37,7 +47,11 @@ function App() {
           path="/dashboard"
           element={
             isAuthenticated ? (
-              <Dashboard setAuth={setIsAuthenticated} />
+              <Dashboard
+                hostname={hostname}
+                port={port}
+                setAuth={setIsAuthenticated}
+              />
             ) : (
               <Navigate to="/login" />
             )

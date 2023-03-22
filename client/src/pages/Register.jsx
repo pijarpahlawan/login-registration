@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import axios from 'axios';
-import FormAuth from '../components/FormAuth';
+import { useState } from "react";
+import axios from "axios";
+import FormAuth from "../components/FormAuth";
 
-function Register({ setAuth }) {
+function Register(props) {
   const [inputs, setInputs] = useState({
-    email: '',
-    username: '',
-    password: '',
+    email: "",
+    username: "",
+    password: "",
   });
 
   const handleInputChange = (e) => {
@@ -17,7 +17,7 @@ function Register({ setAuth }) {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://localhost:8000/auth/register`,
+        `http://${props.hostname}:${props.port}/auth/register`,
         {
           name: inputs.username,
           email: inputs.email,
@@ -25,12 +25,12 @@ function Register({ setAuth }) {
         },
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-        },
+        }
       );
-      localStorage.setItem('token', response.data.token);
-      setAuth(true);
+      localStorage.setItem("token", response.data.token);
+      props.setAuth(true);
     } catch (error) {
       console.error(error.message);
     }
@@ -39,31 +39,31 @@ function Register({ setAuth }) {
   const inputList = [
     {
       id: 1,
-      htmlFor: 'email',
-      label: 'Email',
-      name: 'email',
-      type: 'email',
-      placeholder: 'Email',
+      htmlFor: "email",
+      label: "Email",
+      name: "email",
+      type: "email",
+      placeholder: "Email",
       value: inputs.email,
       onChange: handleInputChange,
     },
     {
       id: 2,
-      htmlFor: 'username',
-      label: 'Username',
-      name: 'username',
-      type: 'text',
-      placeholder: 'Username',
+      htmlFor: "username",
+      label: "Username",
+      name: "username",
+      type: "text",
+      placeholder: "Username",
       value: inputs.username,
       onChange: handleInputChange,
     },
     {
       id: 3,
-      htmlFor: 'password',
-      label: 'Password',
-      name: 'password',
-      type: 'password',
-      placeholder: '*********',
+      htmlFor: "password",
+      label: "Password",
+      name: "password",
+      type: "password",
+      placeholder: "*********",
       value: inputs.password,
       onChange: handleInputChange,
     },
@@ -71,9 +71,9 @@ function Register({ setAuth }) {
 
   return (
     <FormAuth
-      inputs={inputList}
       tittleForm="Registration"
       onSubmit={handleSubmit}
+      inputs={inputList}
       buttonContent="Register"
     />
   );
