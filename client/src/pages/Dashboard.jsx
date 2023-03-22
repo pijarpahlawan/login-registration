@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 function Dashboard(props) {
   const [user, setUser] = useState('');
 
-  const getUsername = async () => {
+  const getUser = async () => {
     try {
       const response = await fetch(
         `http://${props.hostname}:${props.port}/dashboard/`,
@@ -18,7 +18,7 @@ function Dashboard(props) {
       const parsedRes = await response.json();
       setUser(parsedRes);
     } catch (error) {
-      console.error(error);
+      console.error(error.message);
     }
   };
 
@@ -28,12 +28,12 @@ function Dashboard(props) {
       localStorage.removeItem('token');
       props.setAuth(false);
     } catch (error) {
-      console.log(error);
+      console.error(error.message);
     }
   };
 
   useEffect(() => {
-    getUsername();
+    getUser();
   }, []);
 
   return (

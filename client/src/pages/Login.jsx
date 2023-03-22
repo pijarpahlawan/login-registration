@@ -24,9 +24,15 @@ function Login(props) {
           body: JSON.stringify(inputs),
         },
       );
+
       const parsedRes = await response.json();
-      localStorage.setItem('token', parsedRes.token);
-      props.setAuth(true);
+
+      if (parsedRes.token) {
+        localStorage.setItem('token', parsedRes.token);
+        props.setAuth(true);
+      } else {
+        props.setAuth(false);
+      }
     } catch (error) {
       console.error(error.message);
     }
