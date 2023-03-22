@@ -3,7 +3,6 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import ErrorPage from './pages/ErrorPage';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -49,7 +48,6 @@ function App() {
               <Navigate to="/dashboard" />
             )
           }
-          errorElement={<ErrorPage />}
         />
         <Route
           path="/login"
@@ -60,7 +58,6 @@ function App() {
               <Navigate to="/dashboard" />
             )
           }
-          errorElement={<ErrorPage />}
         />
         <Route
           path="/dashboard"
@@ -71,7 +68,6 @@ function App() {
               <Navigate to="/login" />
             )
           }
-          errorElement={<ErrorPage />}
         />
       </Routes>
     </BrowserRouter>
