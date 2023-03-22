@@ -1,12 +1,11 @@
-import { useState } from "react";
-import axios from "axios";
-import FormAuth from "../components/FormAuth";
+import { useState } from 'react';
+import FormAuth from '../components/FormAuth';
 
 function Register(props) {
   const [inputs, setInputs] = useState({
-    email: "",
-    username: "",
-    password: "",
+    email: '',
+    username: '',
+    password: '',
   });
 
   const handleInputChange = (e) => {
@@ -16,20 +15,18 @@ function Register(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
+      const response = await fetch(
         `http://${props.hostname}:${props.port}/auth/register`,
         {
-          name: inputs.username,
-          email: inputs.email,
-          password: inputs.password,
-        },
-        {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-        }
+          body: JSON.stringify(inputs),
+        },
       );
-      localStorage.setItem("token", response.data.token);
+      const parsedRes = response.json();
+      localStorage.setItem('token', parsedRes);
       props.setAuth(true);
     } catch (error) {
       console.error(error.message);
@@ -39,31 +36,31 @@ function Register(props) {
   const inputList = [
     {
       id: 1,
-      htmlFor: "email",
-      label: "Email",
-      name: "email",
-      type: "email",
-      placeholder: "Email",
+      htmlFor: 'email',
+      label: 'Email',
+      name: 'email',
+      type: 'email',
+      placeholder: 'Email',
       value: inputs.email,
       onChange: handleInputChange,
     },
     {
       id: 2,
-      htmlFor: "username",
-      label: "Username",
-      name: "username",
-      type: "text",
-      placeholder: "Username",
+      htmlFor: 'username',
+      label: 'Username',
+      name: 'username',
+      type: 'text',
+      placeholder: 'Username',
       value: inputs.username,
       onChange: handleInputChange,
     },
     {
       id: 3,
-      htmlFor: "password",
-      label: "Password",
-      name: "password",
-      type: "password",
-      placeholder: "*********",
+      htmlFor: 'password',
+      label: 'Password',
+      name: 'password',
+      type: 'password',
+      placeholder: '*********',
       value: inputs.password,
       onChange: handleInputChange,
     },
