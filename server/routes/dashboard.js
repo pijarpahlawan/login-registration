@@ -14,7 +14,7 @@ router.get('/', authorization, async (req, res) => {
     const result = await sequelize.transaction(
       { isolationLevel: Transaction.ISOLATION_LEVELS.READ_COMMITTED },
       async (t) => {
-        const user = await User.findByPk(req.user);
+        const user = await User.findByPk(req.user, { transaction: t });
         return user;
       },
     );
