@@ -21,7 +21,7 @@ const User = getModel(sequelize, DataTypes);
 // registration route
 router.post('/register', async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { username, email, password } = req.body;
 
     const saltRound = 10;
     const salt = await bcrypt.genSalt(saltRound);
@@ -32,7 +32,7 @@ router.post('/register', async (req, res) => {
       async (t) => {
         const newUser = await User.create(
           {
-            userName: name,
+            userName: username,
             userEmail: email,
             userPassword: encryptedPassword,
           },
@@ -57,16 +57,14 @@ router.post('/register', async (req, res) => {
 // login route
 router.post('/login', async (req, res) => {
   try {
-    const { name = '', email = '', password = '' } = req.body;
-
-    console.log(`BACA MASSSS: ${email}`);
+    const { username = '', email = '', password = '' } = req.body;
 
     const result = await sequelize.transaction(
       { isolationLevel: Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED },
       async (t) => {
         const userFinded = await User.findOne({
           where: {
-            [Op.or]: [{ userName: name }, { userEmail: email }],
+            [Op.or]: [{ userName: username }, { userEmail: email }],
           },
           transaction: t,
         });
