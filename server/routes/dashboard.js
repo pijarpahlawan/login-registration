@@ -21,7 +21,7 @@ router.get('/', authorization, async (req, res) => {
 
     return res.status(200).json(result);
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
     return res.status(500).json({ message: error.message });
   }
 });

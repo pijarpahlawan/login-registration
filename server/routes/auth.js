@@ -45,7 +45,7 @@ router.post('/register', async (req, res) => {
     const token = jwtGenerator(result.userId);
     return res.status(201).json({ token });
   } catch (error) {
-    console.error(error);
+    console.error(error.messsage);
     if (error instanceof ValidationError) {
       return res.status(400).json({ message: error.message });
     } else {
@@ -86,7 +86,7 @@ router.post('/login', async (req, res) => {
     const token = jwtGenerator(result.userId);
     return res.status(200).json({ token });
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
     return res.status(500).json({ message: error.message });
   }
 });
@@ -99,7 +99,7 @@ router.get('/is-verify', authorization, async (req, res) => {
       message: 'Authorization accepted',
     });
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
     res.status(500).json({ message: error.message });
   }
 });

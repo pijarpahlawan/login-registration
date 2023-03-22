@@ -19,7 +19,7 @@ module.exports = async (req, res, next) => {
     req.user = payload.user;
     next();
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
     return res.status(403).json({
       isAuthorize: false,
       message: error.message,
