@@ -25,8 +25,8 @@ function Register(props) {
           body: JSON.stringify(inputs),
         },
       );
-      const parsedRes = response.json();
-      localStorage.setItem('token', parsedRes);
+      const parsedRes = await response.json();
+      localStorage.setItem('token', parsedRes.token);
       props.setAuth(true);
     } catch (error) {
       console.error(error.message);
